@@ -31,7 +31,7 @@ export const Posts = () => {
     return <div>ローディング中</div>;
   }
 
-  if (post.length === 0) {
+  if (posts.length === 0) {
     return <div>データは空です</div>;
   }
 
