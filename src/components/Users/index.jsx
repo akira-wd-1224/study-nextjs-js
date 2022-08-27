@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { useUsers } from "src/hooks/useUsers";
+import { useUsers } from "src/hooks/useFetchArray";
+
 
 export const UsersComponent = () => {
   const { data, error, isLoading, isEmpty } = useUsers();
