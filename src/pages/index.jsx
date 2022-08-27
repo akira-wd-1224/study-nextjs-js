@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Header } from "src/components/Header";
 
-const Index = (props) => {
+const Index = () => {
   return (
     <div>
       <Head>
