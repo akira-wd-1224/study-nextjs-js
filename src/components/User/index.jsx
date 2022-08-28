@@ -14,18 +14,20 @@ export const UserComponent = () => {
 
   return (
     <div>
-      <h1>{data.name}</h1>
-      <h2>詳細</h2>
-      <ul>
-        <li>{data.email}</li>
-        <li>{data.username}</li>
-        <li>{data.address.city}</li>
-        <li>{data.phone}</li>
-        <li>{data.website}</li>
-        <li>{data.company.name}</li>
+      <h1 className="font-bold text-3xl">{data.name}</h1>
+      <h2 className="text-xl font-bold mt-10">詳細</h2>
+      <ul className="list-disc mt-2 text-xl">
+        <li>アカウント名：{data.username}</li>
+        <li>メール：{data.email}</li>
+        <li>電話番号：{data.phone}</li>
+        <li>ウェブサイト：{data.website}</li>
+        <li>住所：{data.address.city}</li>
+        <li>勤務先：{data.company.name}</li>
       </ul>
-      <h2>投稿</h2>
-      <PostsByUserId id={data.id} />
+      <h2 className="text-xl font-bold mt-10">投稿</h2>
+      <div className="mt-2">
+        <PostsByUserId id={data.id} />
+      </div>
     </div>
   );
 };
