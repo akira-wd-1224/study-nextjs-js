@@ -1,12 +1,8 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { CommentsByPostId } from "src/components/Comments/CommentsByPostId";
-import { UserByUserId } from "src/components/User/UserByUserId";
-import { usePost } from "src/hooks/usePost";
+import Link from "next/link";
+import { usePosts } from "src/hooks/useFetchArray";
 
-export const Post = () => {
-  const router = useRouter();
-  const { data, error, isLoading } = usePost(router.query.id);
+export const Posts = () => {
+  const { data, error, isLoading, isEmpty } = usePosts();
 
   if (isLoading) {
     return <div>ローディング中</div>;
@@ -16,15 +12,21 @@ export const Post = () => {
     return <div>{error.message}</div>;
   }
 
+  if (isEmpty) {
+    return <div>データは空です</div>;
+  }
+
   return (
-    <div>
-      <Head>
-        <title>{data?.title}</title>
-      </Head>
-      <h1>{data?.title}</h1>
-      <p>{data?.body}</p>
-      <UserByUserId id={data.userId} />
-      <CommentsByPostId id={data.id} />
-    </div>
+    <ol>
+      {data.map((post) => {
+        return (
+          <li key={post.id}>
+            <Link href={`/posts/${post.id}`}>
+              <a>{post.title}</a>
+            </Link>
+          </li>
+        );
+      })}
+    </ol>
   );
 };
