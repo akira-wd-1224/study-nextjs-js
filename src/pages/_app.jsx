@@ -10,7 +10,6 @@ const MyApp = ({ Component, pageProps }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div className="text-red-500" >test</div>
         <Component {...pageProps} />
       </Layout>
     </>
