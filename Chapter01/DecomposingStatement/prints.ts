@@ -51,15 +51,18 @@ namespace DecomposingStatement {
     return result;
   }
 
+  function usd(aNumber: number): string {
+    return new Intl.NumberFormat("en-US",
+      {
+        style: "currency", currency: "USD",
+        minimumFractionDigits: 2
+      }).format(aNumber / 100);
+  }
+
   function statement(invoice: Invoice, plays: Plays): string {
     let totalAmount = 0;
     let volumeCredits = 0;
     let result = `Statement for ${invoice.customer}\n`;
-    const format = new Intl.NumberFormat("en-US",
-      {
-        style: "currency", currency: "USD",
-        minimumFractionDigits: 2
-      }).format;
 
     for (let perf of invoice.performances) {
       // ボリューム特典のポイント加算
@@ -68,10 +71,10 @@ namespace DecomposingStatement {
       if ("comedy" === playFor(perf, plays).type) volumeCredits += Math.floor(perf.audience / 5);
 
       // 注文の内訳を出力
-      result += `  ${playFor(perf, plays).name}: ${format(amountFor(perf, plays) / 100)} (${perf.audience} seats)\n`;
+      result += `  ${playFor(perf, plays).name}: ${usd(amountFor(perf, plays))} (${perf.audience} seats)\n`;
       totalAmount += amountFor(perf, plays);
     }
-    result += `Amount owed is ${format(totalAmount / 100)}\n`;
+    result += `Amount owed is ${usd(totalAmount)}\n`;
     result += `You earned ${volumeCredits} credits\n`;
     return result;
   }
