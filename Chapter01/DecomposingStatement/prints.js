@@ -38,10 +38,10 @@ function statement(invoice, plays) {
     // ボリューム特典のポイント加算
     volumeCredits += Math.max(perf.audience - 30, 0);
     // 喜劇のときは10人につき、さらにポイントを加算
-    if ("comedy" === playFor(plays).type) volumeCredits += Math.floor(perf.audience / 5);
+    if ("comedy" === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
 
     // 注文の内訳を出力
-    result += `  ${playFor(plays).name}: ${format(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
+    result += `  ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
     totalAmount += amountFor(perf);
   }
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
