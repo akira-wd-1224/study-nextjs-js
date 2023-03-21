@@ -67,9 +67,6 @@ namespace DecomposingStatement {
     for (let perf of invoice.performances) {
       // ボリューム特典のポイント加算
       volumeCredits += volumeCreditsFor(perf, plays);
-      // 喜劇のときは10人につき、さらにポイントを加算
-      if ("comedy" === playFor(perf, plays).type) volumeCredits += Math.floor(perf.audience / 5);
-
       // 注文の内訳を出力
       result += `  ${playFor(perf, plays).name}: ${usd(amountFor(perf, plays))} (${perf.audience} seats)\n`;
       totalAmount += amountFor(perf, plays);
