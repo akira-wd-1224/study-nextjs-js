@@ -18,9 +18,9 @@ namespace DecomposingStatement {
     [playID: string]: Play;
   };
 
-  function amountFor(aPerformance: Performance, play: Play): number {
+  function amountFor(aPerformance: Performance, plays: Plays): number {
     let result = 0;
-    switch (play.type) {
+    switch (playFor(aPerformance, plays).type) {
       case "tragedy":
         result = 40000;
         if (aPerformance.audience > 30) {
@@ -35,7 +35,7 @@ namespace DecomposingStatement {
         result += 300 * aPerformance.audience;
         break;
       default:
-        throw new Error(`unknown type: ${play.type}`);
+        throw new Error(`unknown type: ${playFor(aPerformance, plays).type}`);
     }
     return result;
   }
@@ -55,7 +55,7 @@ namespace DecomposingStatement {
       }).format;
 
     for (let perf of invoice.performances) {
-      let thisAmount = amountFor(perf, playFor(perf, plays));
+      let thisAmount = amountFor(perf, plays);
       // ボリューム特典のポイント加算
       volumeCredits += Math.max(perf.audience - 30, 0);
       // 喜劇のときは10人につき、さらにポイントを加算
