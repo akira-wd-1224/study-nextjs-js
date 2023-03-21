@@ -8,7 +8,7 @@ namespace DecomposingStatement {
     playID: string;
     audience: number;
   };
-
+  
   type Plays = {
     [playID: string]: Play;
   };
@@ -17,7 +17,7 @@ namespace DecomposingStatement {
     name: string;
     type: string;
   };
-
+  
   function amountFor(aPerformance: Performance, play: Play): number {
     let result = 0;
     switch (play.type) {
@@ -39,7 +39,11 @@ namespace DecomposingStatement {
     }
     return result;
   }
-
+  
+  function playFor(aPerformance: Performance, plays: Plays): Play {
+    return plays[aPerformance.playID];
+  }
+  
   function statement(invoice: Invoice, plays: Plays): string {
     let totalAmount = 0;
     let volumeCredits = 0;
@@ -48,16 +52,16 @@ namespace DecomposingStatement {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 2,
-    }).format;
-
+      }).format;
+  
     for (let perf of invoice.performances) {
-      const play = plays[perf.playID];
+      const play = playFor(perf, plays);
       let thisAmount = amountFor(perf, play);
       // ボリューム特典のポイント加算
       volumeCredits += Math.max(perf.audience - 30, 0);
       // 喜劇のときは10人につき、さらにポイントを加算
       if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
-
+  
       // 注文の内訳を出力
       result += `  ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
       totalAmount += thisAmount;
