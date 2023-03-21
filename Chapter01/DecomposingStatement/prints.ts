@@ -44,6 +44,13 @@ namespace DecomposingStatement {
     return plays[aPerformance.playID];
   }
 
+  function volumeCreditsFor(aPerformance: Performance, plays: Plays): number {
+    let result = 0;
+    result += Math.max(aPerformance.audience - 30, 0);
+    if ("comedy" === playFor(aPerformance, plays).type) result += Math.floor(aPerformance.audience / 5);
+    return result;
+  }
+
   function statement(invoice: Invoice, plays: Plays): string {
     let totalAmount = 0;
     let volumeCredits = 0;
@@ -56,7 +63,7 @@ namespace DecomposingStatement {
 
     for (let perf of invoice.performances) {
       // ボリューム特典のポイント加算
-      volumeCredits += Math.max(perf.audience - 30, 0);
+      volumeCredits += volumeCreditsFor(perf, plays);
       // 喜劇のときは10人につき、さらにポイントを加算
       if ("comedy" === playFor(perf, plays).type) volumeCredits += Math.floor(perf.audience / 5);
 
