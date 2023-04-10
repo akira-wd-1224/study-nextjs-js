@@ -1,46 +1,47 @@
 
 
 function statement(invoice, plays) {
-  return renderPlainText(invoice,plays);
+  const statementData = {};
+  return renderPlainText(statementData, invoice, plays);
 }
 
-function renderPlainText(invoice, plays){
+function renderPlainText(data, invoice, plays) {
   let result = `Statement for ${invoice.customer}\n`;
   for (let perf of invoice.performances) {
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
   }
-  
+
   result += `Amount owed is ${usd(totalAmount())}\n`;
   result += `You earned ${totalvolumeCredits()} credits\n`;
   return result;
-  
-  function totalAmount(){
+
+  function totalAmount() {
     let result = 0
     for (let perf of invoice.performances) {
       result += amountFor(perf);
     }
     return result;
   }
-    
+
   function playFor(aPerformance) {
     return plays[aPerformance.playID];
   }
-    
+
   function volumeCreditsFor(aPerformance) {
     let result = 0;
     result += Math.max(aPerformance.audience - 30, 0);
     if ("comedy" === playFor(aPerformance).type) result += Math.floor(aPerformance.audience / 5);
     return result;
   }
-    
+
   function usd(aNumber) {
     return new Intl.NumberFormat("en-US",
-    {
-      style: "currency", currency: "USD",
-      minimumFractionDigits: 2
-    }).format(aNumber / 100);
+      {
+        style: "currency", currency: "USD",
+        minimumFractionDigits: 2
+      }).format(aNumber / 100);
   }
-    
+
   function totalvolumeCredits() {
     let result = 0;
     for (let perf of invoice.performances) {
