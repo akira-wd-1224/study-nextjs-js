@@ -9,7 +9,12 @@ function statement(invoice, plays) {
 
 function enrichPerformance(aPerformance) {
   const result = Object.assign({}, aPerformance);
-  return result
+  result.play = playFor(result);
+  return result;
+}
+
+function playFor(aPerformance) {
+  return plays[aPerformance.playID];
 }
 
 function renderPlainText(data, plays) {
@@ -30,9 +35,6 @@ function renderPlainText(data, plays) {
     return result;
   }
 
-  function playFor(aPerformance) {
-    return plays[aPerformance.playID];
-  }
 
   function volumeCreditsFor(aPerformance) {
     let result = 0;
