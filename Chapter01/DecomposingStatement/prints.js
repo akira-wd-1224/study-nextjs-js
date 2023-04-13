@@ -10,6 +10,29 @@ function statement(invoice, plays) {
 function enrichPerformance(aPerformance) {
   const result = Object.assign({}, aPerformance);
   result.play = playFor(result);
+  result.amount = amountFor(result);
+  return result;
+}
+
+function amountFor(aPerformance) {
+  let result = 0;
+  switch (aPerformance.play.type) {
+    case "tragedy":
+      result = 40000;
+      if (aPerformance.audience > 30) {
+        result += 1000 * (aPerformance.audience - 30);
+      }
+      break;
+    case "comedy":
+      result = 30000;
+      if (aPerformance.audience > 20) {
+        result += 10000 + 500 * (aPerformance.audience - 20);
+      }
+      result += 300 * aPerformance.audience;
+      break;
+    default:
+      throw new Error(`unknown type: ${aPerformance.play.type}`);
+  }
   return result;
 }
 
@@ -20,7 +43,7 @@ function playFor(aPerformance) {
 function renderPlainText(data, plays) {
   let result = `Statement for ${data.customer}\n`;
   for (let perf of data.performances) {
-    result += `  ${pref.play.name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    result += `  ${pref.play.name}: ${usd(pref.amount)} (${perf.audience} seats)\n`;
   }
 
   result += `Amount owed is ${usd(totalAmount())}\n`;
@@ -30,7 +53,7 @@ function renderPlainText(data, plays) {
   function totalAmount() {
     let result = 0
     for (let perf of data.performances) {
-      result += amountFor(perf);
+      result += pref.amount;
     }
     return result;
   }
@@ -59,25 +82,4 @@ function renderPlainText(data, plays) {
     return result
   }
 
-  function amountFor(aPerformance) {
-    let result = 0;
-    switch (aPerformance.play.type) {
-      case "tragedy":
-        result = 40000;
-        if (aPerformance.audience > 30) {
-          result += 1000 * (aPerformance.audience - 30);
-        }
-        break;
-      case "comedy":
-        result = 30000;
-        if (aPerformance.audience > 20) {
-          result += 10000 + 500 * (aPerformance.audience - 20);
-        }
-        result += 300 * aPerformance.audience;
-        break;
-      default:
-        throw new Error(`unknown type: ${aPerformance.play.type}`);
-    }
-    return result;
-  }
 }
