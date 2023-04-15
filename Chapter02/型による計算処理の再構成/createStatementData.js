@@ -42,8 +42,25 @@ class PerformanceCalculator {
     }
 }
 
+function createPerformanceCalculator(aPerformance, aPlay) {
+    switch (aPlay.type) {
+        case "tragedy": return new TragendyCalculator(aPerformance, aPlay);
+        case "comedy": return new ComedyCalculator(aPerformance, aPlay);
+        default:
+            throw new Error(`unknown type: ${aPlay.type}`);
+    }
+}
+
+class TragendyCalculator extends PerformanceCalculator {
+
+}
+
+class ComedyCalculator extends PerformanceCalculator {
+
+}
+
 function enrichPerformance(aPerformance) {
-    const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance));
+    const calculator = PerformanceCalculator(aPerformance, playFor(aPerformance));
     const result = Object.assign({}, aPerformance);
     result.play = calculator.play;
     result.amount = calculator.amount;
